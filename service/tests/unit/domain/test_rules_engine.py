@@ -85,13 +85,13 @@ def test_window_left_boundary_is_strictly_exclusive():
     decisions = evaluate_cluster("c", [early, late], [rule], initial_workers=4)
 
     # If `early` were wrongly included, avg((0+600)/2)=300 would not exceed 500 and nothing
-    # would fire. it's correctly excluded, so the window is just [600] -> avg 600 > 500.
+    # would fire. It's correctly excluded, so the window is just [600] -> avg 600 > 500.
     assert len(decisions) == 1
     assert decisions[0].decision_ts == late.timestamp_raw
 
 
 def test_window_right_edge_excludes_later_records():
-    """Only ts <= T is in the window. the full record set is searched, but never past T."""
+    """Only ts <= T is in the window. The full record set is searched, but never past T."""
     rule = Rule(
         name="r", metric="batchDuration", aggregation="last", operator="gt", threshold=500,
         window_minutes=10, min_batches=1, target_workers=8, cooldown_minutes=0,

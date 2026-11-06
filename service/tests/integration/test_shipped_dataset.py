@@ -1,8 +1,8 @@
-"""The whole use case given. Uses the assignment's own original data/ and rules.yaml, exactly as
-seed.py uploads them, must produce exactly these decisions.
-Depends onoriginal data/ and rules.yaml (If changed, test will fail)
+"""The whole use case: given the assignment's own original data/ and rules.yaml, exactly as
+seed.py uploads them, the run must produce exactly these decisions.
+Depends on the original data/ and rules.yaml (if either changes, this test will need updating).
 
-Runs against the in-memory port fakes (no AWS); the real adapters run in the Docker run.
+Runs against the in-memory port fakes (no AWS).
 """
 import json
 from pathlib import Path
