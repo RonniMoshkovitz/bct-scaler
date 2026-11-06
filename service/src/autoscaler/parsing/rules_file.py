@@ -6,9 +6,7 @@ from typing import Any
 import yaml
 
 from autoscaler.domain.models import Rule
-
-AGGREGATIONS = ["avg", "max", "min", "last"]
-OPERATORS =["gt", "lt"]
+from autoscaler.domain.rules_engine import AGGREGATIONS, OPERATORS
 
 
 def parse_rules(data: bytes) -> list[Rule]:
@@ -22,16 +20,14 @@ def parse_rules(data: bytes) -> list[Rule]:
 
 
 def _parse_rule(entry: Any) -> Rule:
-    """Parses a raw rule entry into a Rule"""
+    """Parses a raw rule entry into a Rule object"""
     name = entry.get("name") if isinstance(entry, dict) else None
     if not isinstance(name, str) or not name:
         raise ValueError(f"each rule must be a mapping with a name: {entry!r}")
 
-    aggregation = entry.get("aggregation")
-    operator = entry.get("operator")
-    if aggregation not in AGGREGATIONS:
+    if (aggregation := entry.get("aggregation")) not in AGGREGATIONS:
         raise ValueError(f"rule {name!r} has unsupported aggregation {aggregation!r}")
-    if operator not in OPERATORS:
+    if (operator := entry.get("operator")) not in OPERATORS:
         raise ValueError(f"rule {name!r} has unsupported operator {operator!r}")
 
     try:
