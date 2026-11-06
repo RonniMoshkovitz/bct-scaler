@@ -1,0 +1,20 @@
+rules:
+  - name: scale_up_slow_batches
+    metric: batchDuration
+    aggregation: avg
+    operator: gt
+    threshold: 300000
+    window_minutes: 15
+    min_batches: 3
+    target_workers: 8
+    cooldown_minutes: 20
+
+  - name: scale_down_idle
+    metric: numInputRows
+    aggregation: max
+    operator: lt
+    threshold: 1000
+    window_minutes: 30
+    min_batches: 5
+    target_workers: 2
+    cooldown_minutes: 60
