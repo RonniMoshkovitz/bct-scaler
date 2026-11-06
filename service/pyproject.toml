@@ -1,0 +1,43 @@
+[build-system]
+requires = ["hatchling>=1.24"]
+build-backend = "hatchling.build"
+
+[project]
+name = "autoscaler"
+version = "0.1.0"
+description = "Streaming job autoscaler: consumes Spark driver log notifications from SQS, evaluates scaling rules, writes decisions to DynamoDB."
+requires-python = ">=3.11"
+dependencies = [
+    "boto3>=1.35",  # ReceiveMessage MessageSystemAttributeNames
+    "PyYAML>=6.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[project.scripts]
+autoscaler = "autoscaler.main:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]  # lets tests import the shared in-memory port fakes: `from fakes import ...`
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+extend-select = ["I", "TID"]
+
+# Dependency rule: only `infrastructure` (and tests) may touch boto3/botocore. Domain, parsing
+# and the application layer depend on `autoscaler.application.ports` instead.
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"boto3".msg = "AWS SDK is only allowed in autoscaler.infrastructure; depend on autoscaler.application.ports"
+"botocore".msg = "AWS SDK is only allowed in autoscaler.infrastructure; depend on autoscaler.application.ports"
+
+[tool.ruff.lint.per-file-ignores]
+"src/autoscaler/infrastructure/**" = ["TID251"]
+"tests/**" = ["TID251"]
