@@ -11,7 +11,42 @@ the assignment.
 
 **Estimated effort:** ~3–6 hours (including AWS reading time).
 
----
+
+## Running the service **(ADDED TO README)**
+
+The autoscaler is a Python service, containerized and wired into `docker-compose.yml` as the
+`autoscaler` service (source in `service/`). Once the seed script's dependencies are
+installed (`pip install -r seed/requirements.txt`, section 3.3), running the whole thing end
+to end takes exactly two commands from the project root:
+
+```bash
+docker compose up -d --build
+python seed/seed.py
+```
+
+`docker compose up` starts LocalStack and the `autoscaler` container together. The container
+waits for the queue to be created and then for the first messages to arrive, so the order above 
+is safe even though the service starts before `seed/seed.py` runs.
+
+Tail its progress and wait for the line the grading harness looks for:
+
+```bash
+docker compose logs -f autoscaler   # ends with: ALL CLUSTERS PROCESSED
+```
+
+Inspect the resulting decisions (same no-AWS-CLI style as section 3.4):
+
+```bash
+python -c "import boto3; t=boto3.resource('dynamodb',endpoint_url='http://localhost:4566',region_name='us-east-1',aws_access_key_id='test',aws_secret_access_key='test').Table('scaling_decisions'); print(*t.scan()['Items'], sep='\n')"
+```
+
+To run the test suite instead (no Docker/LocalStack needed, it runs against in-memory fakes):
+
+```bash
+pip install -e "./service[dev]"
+pytest service/tests
+```
+
 
 ## 1. Background
 

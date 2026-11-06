@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 def finalize_cluster(
     progress: ClusterProgress, rules: Sequence[Rule], write_decisions: WriteDecisions
 ) -> list[Decision]:
-    """Evaluates the cluster's full record se, writes the resulting decisions and
+    """Evaluates the cluster's full record set, writes the resulting decisions and
     marks the cluster finalized. Returns the decisions written (possibly none)."""
     cluster_id = progress.spec.cluster_id
     records = progress.final_records()

@@ -42,21 +42,21 @@ def run(settings: Settings) -> RunSummary:
 def main() -> None:
     settings = Settings.from_env()
     configure_logging(settings.log_level)
-    
+
     try:
         summary = run(settings)
     except Exception:
         logger.exception("autoscaler run failed")
         sys.exit(1)
-        
+
     logger.info("done: %d clusters, %d decisions", summary.clusters, summary.decisions)
     if summary.skipped_files:
         logger.warning(
             "%d file(s) were skipped as corrupt or unreadable: %s",
             len(summary.skipped_files), summary.skipped_files,
         )
-        
-    # The grading harness scans stdout for this exact line. nothing else is written to stdout.
+
+    # Nothing else is written to stdout.
     print("ALL CLUSTERS PROCESSED")
 
 

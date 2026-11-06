@@ -1,4 +1,4 @@
-"""Evaluates scaling-rules. It expects the records to already be sorted anddeduplicated"""
+"""Evaluates scaling rules. It expects the records to already be sorted and deduplicated."""
 
 from __future__ import annotations
 
@@ -25,7 +25,7 @@ def evaluate_cluster(
     rules: Sequence[Rule],
     initial_workers: int,
 ) -> list[Decision]:
-    """Walks one cluster's full, sorted record set and produce its scaling decisions."""
+    """Walks one cluster's full, sorted record set and produces its scaling decisions."""
     timestamps = [record.timestamp for record in records]
     current_workers = initial_workers
     last_decision_ts: datetime | None = None
@@ -61,7 +61,7 @@ def evaluate_cluster(
 
 
 def _in_cooldown(rule: Rule, ts: datetime, last_decision_ts: datetime | None) -> bool:
-    """Checks if it is cooldown period after last decision."""
+    """Checks if it is in the cooldown period after the last decision."""
     return last_decision_ts is not None and ts < last_decision_ts + timedelta(
         minutes=rule.cooldown_minutes
     )
@@ -73,9 +73,9 @@ def _condition_holds(
     timestamps: list[datetime],
     index: int,
 ) -> bool:
-    """Checks if condition holds at current the evaluation point"""
+    """Checks if the condition holds at the current evaluation point."""
     values = _metric_values(rule.metric, _window_records(rule, records, timestamps, index))
-    if len(values) < rule.min_batches:
+    if not values or len(values) < rule.min_batches:
         return False
 
     aggregate = AGGREGATIONS[rule.aggregation](values)

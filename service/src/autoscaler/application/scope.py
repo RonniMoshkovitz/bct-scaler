@@ -11,7 +11,7 @@ from autoscaler.parsing.rules_file import parse_rules
 
 @dataclass(frozen=True)
 class InputLocations:
-    """Run's configuration objects location in the object storage."""
+    """Location of this run's configuration objects in object storage."""
     bucket: str
     manifest_key: str
     rules_key: str
@@ -19,13 +19,13 @@ class InputLocations:
 
 @dataclass(frozen=True)
 class RunScope:
-    """Scope, fixed for the whole run. I defines the target clesters to evaluate and the rules to evaluate by."""
+    """Scope, fixed for the whole run. It defines the target clusters to evaluate and the rules to evaluate by."""
     clusters: tuple[ClusterSpec, ...]
     rules: tuple[Rule, ...]  # in file order: first-match-wins depends on it
 
 
 def load_scope(read_object: ReadObject, locations: InputLocations) -> RunScope:
-    """Reads and validates the manifest and rules. Raises ValueError if either is malformed, 
+    """Reads and validates the manifest and rules. Raises ValueError if either is malformed,
     as a run can't proceed without these."""
     return RunScope(
         clusters=tuple(parse_manifest(read_object(locations.bucket, locations.manifest_key))),

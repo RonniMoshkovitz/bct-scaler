@@ -28,7 +28,7 @@ class ParsedLog:
 
 
 def parse_log_file(data: bytes) -> ParsedLog:
-    """Parses raw bytes of a `.log.gz` file into a single ParsedLog. 
+    """Parses raw bytes of a `.log.gz` file into a single ParsedLog.
     Raises ValueError only if they aren't a complete, valid gzip stream."""
     try:
         text = gzip.decompress(data).decode("utf-8", errors="replace")
@@ -52,7 +52,7 @@ def parse_log_text(text: str) -> ParsedLog:
 
 
 def _split_entries(text: str) -> list[str]:
-    """Splits log file text into seperate log text enteries."""
+    """Splits log file text into separate log text entries."""
     starts = [match.start() for match in _HEADER_RE.finditer(text)]
     if not starts:
         return []
@@ -61,7 +61,7 @@ def _split_entries(text: str) -> list[str]:
 
 
 def _parse_progress_entry(entry: str) -> ProgressRecord | None:
-    """Parses text of a progress record log entry into a ProgressRecord"""
+    """Parses text of a progress record log entry into a ProgressRecord."""
     _, _, after_marker = entry.partition(_MARKER)
     if (brace_pos := after_marker.find("{")) == -1:
         logger.debug("progress marker with no JSON body, skipping entry")

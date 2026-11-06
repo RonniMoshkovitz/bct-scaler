@@ -1,4 +1,4 @@
-"""Parser YAML file containing the scaling rules into validated rules, according to file order."""
+"""Parses a YAML file containing the scaling rules into validated rules, according to file order."""
 from __future__ import annotations
 
 from typing import Any
@@ -20,7 +20,7 @@ def parse_rules(data: bytes) -> list[Rule]:
 
 
 def _parse_rule(entry: Any) -> Rule:
-    """Parses a raw rule entry into a Rule object"""
+    """Parses a raw rule entry into a Rule object."""
     name = entry.get("name") if isinstance(entry, dict) else None
     if not isinstance(name, str) or not name:
         raise ValueError(f"each rule must be a mapping with a name: {entry!r}")

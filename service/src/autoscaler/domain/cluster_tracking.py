@@ -10,7 +10,7 @@ from autoscaler.domain.models import ClusterSpec, ProgressRecord
 @dataclass
 class ClusterProgress:
     """Collects one cluster's records until every file listed in the manifest has arrived.
-    Rrecords are only sorted once the set is complete.
+    Records are only sorted once the set is complete.
     """
 
     spec: ClusterSpec
@@ -57,7 +57,7 @@ class ClusterProgress:
 
 
 def start_tracking_clusters(specs: Iterable[ClusterSpec]) -> dict[str, ClusterProgress]:
-    """Builds One ClusterProgress per manifest cluster, keyed by cluster id."""
+    """Builds one ClusterProgress per manifest cluster, keyed by cluster id."""
     return {spec.cluster_id: ClusterProgress(spec) for spec in specs}
 
 
