@@ -1,4 +1,4 @@
-"""Connection and acess to AWS services using boto3."""
+"""Connection and access to AWS services using boto3."""
 
 from __future__ import annotations
 

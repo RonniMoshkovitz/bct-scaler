@@ -1,4 +1,4 @@
-"""Processes messages from a given queue that contain reference to a log file into cluster records.
+"""Processes messages from a given queue that contain a reference to a log file into cluster records.
 It owns the whole life of a delivery: decide whether the message is usable, fetch and parse its
 file, and ack it (or leave it un-acked so the queue redelivers it).
 """
@@ -67,7 +67,7 @@ def _ingest_file(
     read_object: ReadObject,
     max_receive_attempts: int,
 ) -> None:
-    """Fetchs and parses one log file into its cluster. A file that can never be read is skipped
+    """Fetches and parses one log file into its cluster. A file that can never be read is skipped
     at once, any other failed read is left for redelivery. A file is skipped once it has
     failed max_receive_attempts deliveries."""
     try:
@@ -87,8 +87,8 @@ def _ingest_file(
         )
         if attempt < max_receive_attempts:
             return
-        
-        # In production a redrive policy would move it to a dead-letter queue, 
+
+        # In production a redrive policy would move it to a dead-letter queue,
         # but this service doesn't create resources, so it drops it and moves on.
         logger.error(
             "giving up on %s (%s); skipping it — the cluster will be evaluated without its records",
@@ -105,7 +105,7 @@ def _ingest_file(
 
 
 def _record_file(data: bytes, ref: LogFileRef, progress: ClusterProgress) -> None:
-    """Parses a fetched file into its cluster. A corrupt file is skipped at once"""
+    """Parses a fetched file into its cluster. A corrupt file is skipped at once."""
     try:
         parsed = parse_log_file(data)
     except ValueError:

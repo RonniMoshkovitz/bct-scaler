@@ -1,4 +1,4 @@
-"""Writes decisions into dynamoDB pre-created table."""
+"""Writes decisions into a pre-created DynamoDB table."""
 from __future__ import annotations
 
 from collections.abc import Sequence

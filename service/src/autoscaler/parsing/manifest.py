@@ -1,4 +1,4 @@
-"""converta a JSON manifest for clusters into a list of cluster specs."""
+"""Converts a JSON manifest for clusters into a list of cluster specs."""
 from __future__ import annotations
 
 import json

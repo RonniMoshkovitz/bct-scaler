@@ -1,4 +1,4 @@
-"""Autoscaler full run pipline.
+"""Autoscaler full run pipeline.
 The run starts by waiting for the first message. That message is what proves the input data
 exists, so the scope (manifest + rules) is loaded only after
 that point, with no retries.
@@ -71,14 +71,14 @@ def _set_up_run(
     inputs: InputLocations,
     clock: Callable[[], float],
 ) -> tuple[tuple[Rule, ...], dict[str, ClusterProgress], Iterator[Sequence[QueueMessage]]]:
-    """Waits for the first message, then loads the scope and start tracking its clusters.
+    """Waits for the first message, then loads the scope and starts tracking its clusters.
     Returns the rules, the clusters being tracked, and every batch still to process (starting
     with that first one).
     """
     clusters_tracker: dict[str, ClusterProgress] = {}
     batches = _non_empty_batches(receive_messages, clock, lambda: _waiting_for(clusters_tracker))
 
-    first_batch = next(batches)  # blocks until first message arrives.
+    first_batch = next(batches)  # blocks until the first message arrives.
     scope = load_scope(read_object, inputs)
     clusters_tracker.update(cluster_tracking.start_tracking_clusters(scope.clusters))
     logger.info("starting: %d clusters, %d rules", len(scope.clusters), len(scope.rules))

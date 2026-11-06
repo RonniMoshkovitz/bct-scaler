@@ -20,7 +20,7 @@ _RECEIVE_COUNT_ATTRIBUTE = "ApproximateReceiveCount"
 
 
 def wait_for_queue(sqs_resource: Any, queue_name: str) -> Any:
-    """Polling with no time limit until the queue exists. Logging once a minute. 
+    """Waits with no time limit until the queue exists, logging once a minute.
     Any error other than "queue does not exist" is raised immediately.
     """
     started = time.monotonic()
