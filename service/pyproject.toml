@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Streaming job autoscaler: consumes Spark driver log notifications from SQS, evaluates scaling rules, writes decisions to DynamoDB."
 requires-python = ">=3.11"
 dependencies = [
-    "boto3>=1.35",  # ReceiveMessage MessageSystemAttributeNames
+    "boto3>=1.35",
     "PyYAML>=6.0",
 ]
 
@@ -23,7 +23,7 @@ autoscaler = "autoscaler.main:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["tests"]  # lets tests import the shared in-memory port fakes: `from fakes import ...`
+pythonpath = ["src", "tests"]
 
 [tool.ruff]
 line-length = 100
