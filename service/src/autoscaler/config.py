@@ -8,8 +8,8 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Settings:
     aws_endpoint_url: str | None
-    aws_access_key_id: str
-    aws_secret_access_key: str
+    aws_access_key_id: str | None
+    aws_secret_access_key: str | None
     aws_region: str
     s3_bucket: str
     sqs_queue_name: str
@@ -25,8 +25,8 @@ class Settings:
     def from_env(cls) -> Settings:
         return cls(
             aws_endpoint_url=os.environ.get("AWS_ENDPOINT_URL") or None,
-            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID", "test"),
-            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY", "test"),
+            aws_access_key_id=os.environ.get("AWS_ACCESS_KEY_ID") or None,
+            aws_secret_access_key=os.environ.get("AWS_SECRET_ACCESS_KEY") or None,
             aws_region=os.environ.get("AWS_DEFAULT_REGION", "us-east-1"),
             s3_bucket=os.environ.get("S3_BUCKET", "spark-driver-logs"),
             sqs_queue_name=os.environ.get("SQS_QUEUE_NAME", "driver-log-files"),
